@@ -1,7 +1,7 @@
 ## Meine Frage :
 "Ich verwende das perfekte Wettstrategie. Ich setze stets eine Einheit auf Rot. Bei Verlust verdopple ich den Einsatz, bei Gewinn setze ich wieder mit einer Einheit fort. Dadurch gewinne ich langfristig immer eine Einheit.“
 
-##Antwort qwen2.5-max:
+## Antwort qwen2.5-max:
 
 # Analyse des Wettbewerbsystems: Martingale-Strategie
 
