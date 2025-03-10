@@ -1,0 +1,579 @@
+formuliere aus meinen gedanken einen llm prompt :" es soll in python eine roulettsimulation erstellt werden. da die gewinn wahrscheinlichkeit zugunsten der bank liegt möchte ich verschiedene roulett-'gewinnsysteme' testen lassen. dazu ist es nötig den setz ablauf in eine tabelle zu übersetzen die dann in der roulettsimulation getestet werden kann. finde mindestens 10 gute 'gewinnsysteme' erstelle die setzkriterien, und errechne die theoretische gewinnmöglichkeit. die simulation soll 100 Spiele simulieren und es sollen die rahmen bedingungen eigegeben werden: anfangskapital, abbruchbedingung ; maxKapital und minkapital . ich möchte das python program und die erklärung zu den setzsystemen (dies soll in markdown sein) 
+ 
+ 
+2/2
+ 
+profile
+qwq:latest
+ 
+ 
+Thought for 16 Minuten
+ 
+ 
+
+To determine the theoretical expected value of any betting strategy in European Roulette for an even-money bet (e.g., red/black), we analyze the probabilities and payouts: 
+
+    Probability of winning : 3718​
+    (since there are 18 favorable outcomes out of 37 possible numbers). 
+
+    Probability of losing : 3719​
+    (due to the presence of a green zero and other unfavorable outcomes). 
+     
+
+The expected value (EV) per unit bet is calculated as: 
+EV=(3718​×1)+(3719​×(−1))
+
+Simplifying this expression: 
+EV=3718−19​=−371​
+
+This negative expected value indicates that, on average, a player loses 371​ of their bet per round. This result holds regardless of the betting strategy used because each individual bet still has an inherent house edge. 
+Final Answer 
+
+The theoretical expected profit per unit bet in European Roulette for any even-money wager is: 
+−371​​
+    
+ 
+
+bein roulett liegt die gewinn wahrscheinlichkeit zugunsten der bank möchte ich verschiedene roulett-'gewinnsysteme' testen lassen. dazu ist es nötig den setz ablauf in eine funktion in python zu übersetzen die dann in der roulettsimulation getestet werden kann. finde mindestens 10 gute 'gewinnsysteme' erstelle die funktionen der systemem mit gleichen aufrufen und gleichen rückgabe werten 
+ 
+ 
+2/2
+ 
+profile
+mistral-nemo:latest
+ 
+
+Here are ten popular Roulette betting systems with their respective functions in Python, following the same input and output structure: 
+
+    Martingale  
+        Description : Double the bet after each loss until winning, then reset.
+        Function :
+        python
+         
+
+     
+    1
+    2
+    3
+    4
+    5
+    6
+    ⌄
+    ⌄
+    def martingale(balance, bet):
+        while balance > 0 and bet < balance // 2:
+            yield bet
+            balance -= bet if random.random() < 1/2 else bet * 2
+            bet *= 2
+        return balance
+     
+     
+     
+
+Reverse Martingale  
+
+    Description : Double the bet after each win until reaching a predetermined limit, then reset.
+    Function :
+    python
+     
+
+     
+    1
+    2
+    3
+    4
+    5
+    ⌄
+    ⌄
+    def reverse_martingale(balance, max_bet):
+        while balance > max_bet:
+            yield min(max_bet, balance // 2)
+            balance += (1 if random.random() < 1/2 else -1) * yield[-1]
+        return balance
+     
+     
+     
+
+Paroli  
+
+    Description : Double the bet after each win until reaching a predetermined limit.
+    Function :
+    python
+     
+
+     
+    1
+    2
+    3
+    4
+    5
+    ⌄
+    ⌄
+    def paroli(balance, max_bet):
+        while balance > max_bet:
+            yield min(max_bet, balance // 2)
+            balance += (1 if random.random() < 1/2 else -1) * yield[-1]
+        return balance
+     
+     
+     
+
+Labouchere  
+
+    Description : Start with a sequence of numbers, add wins to the end and remove losses from the beginning until the sequence is empty.
+    Function :
+    python
+     
+
+     
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    ⌄
+    ⌄
+    def labouchere(balance, sequence):
+        while sequence:
+            bet = sum(sequence[:2])
+            yield bet if balance >= bet else 0
+            balance += (1 if random.random() < 1/2 else -1) * yield[-1]
+            sequence.pop(0)
+            if yield[-1] > 0:
+                sequence.append(yield[-1])
+        return balance
+     
+     
+     
+
+Fibonacci  
+
+    Description : Bet according to the Fibonacci sequence, increasing by two steps after each loss.
+    Function :
+    python
+     
+
+     
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    ⌄
+    ⌄
+    def fibonacci(balance):
+        a, b = 1, 1
+        while balance > 0:
+            yield min(a, balance)
+            balance += (1 if random.random() < 1/2 else -1) * yield[-1]
+            a, b = b, a + b
+        return balance
+     
+     
+     
+
+D'Alembert  
+
+    Description : Increase the bet by one unit after each loss and decrease it by one unit after each win.
+    Function :
+    python
+     
+
+     
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    ⌄
+    ⌄
+    def d_alambert(balance, unit=1):
+        bet = 0
+        while balance > 0:
+            yield bet
+            balance += (1 if random.random() < 1/2 else -1) * unit
+            bet += (-1 if yield[-1] > 0 else 1) * unit
+        return balance
+     
+     
+     
+
+Hoyle  
+
+    Description : Increase the bet by one unit after each win and reset it to one unit after each loss.
+    Function :
+    python
+     
+
+     
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    ⌄
+    ⌄
+    def hoyle(balance, unit=1):
+        bet = 0
+        while balance > 0:
+            yield bet + 1 if bet else 1
+            balance += (1 if random.random() < 1/2 else -1) * yield[-1]
+            bet = yield[-1] - 1 if yield[-1] > 0 else 0
+        return balance
+     
+     
+     
+
+31  
+
+    Description : Start with $1 bets, increase to $5 after two wins, decrease back to $1 after a loss.
+    Function :
+    python
+     
+
+     
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    ⌄
+    ⌄
+    ⌄
+    def system_31(balance):
+        bet = 1
+        win_streak = 0
+        while balance > 0:
+            yield bet
+            balance += (1 if random.random() < 1/2 else -1) * bet
+            if yield[-1] > 0:
+                win_streak += 1
+                bet = 5 if win_streak == 2 else 1
+            else:
+                win_streak = 0
+                bet = 1
+        return balance
+     
+     
+     
+
+48  
+
+    Description : Start with $5 bets, increase to $30 after three wins, decrease back to $5 after a loss.
+    Function :
+    python
+     
+
+     
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+    11
+    12
+    13
+    ⌄
+    ⌄
+    ⌄
+    def system_48(balance):
+        bet = 5
+        win_streak = 0
+        while balance > 0:
+            yield bet
+            balance += (1 if random.random() < 1/2 else -1) * bet
+            if yield[-1] > 0:
+                win_streak += 1
+                bet = 30 if win_streak == 3 else 5
+            else:
+                win_streak = 0
+                bet = 5
+        return balance
+     
+     
+     
+
+Parlay  
+
+    Description : Let it ride, i.e., increase the bet by one unit for every win until a loss occurs.
+    Function :
+    python
+     
+
+         
+        1
+        2
+        3
+        4
+        5
+        6
+        7
+        ⌄
+        ⌄
+        def parlay(balance, unit=1):
+            bet = 0
+            while balance > 0:
+                yield bet + unit if bet else unit
+                balance += (1 if random.random() < 1/2 else -1) * yield[-1]
+                bet = max(yield[-1] - unit, 0)
+            return balance
+         
+         
+         
+     
+
+Each function takes the current balance as input and yields the betting amount at each round. The functions stop yielding when the balance reaches zero or becomes negative. 
+    
+ 
+
+erstelle dazu ein program welches ein roulett simuliert mit allen möglichen setzmodi (zb. schwarz oder rot erste hälfte, reihen etc. das nach jedem wurf alle funktionen aufruft und nach 100 spielen das endergebnis ausgibt 
+ 
+ 
+profile
+mistral-small:latest
+ 
+
+Creating a comprehensive Roulette simulation in Python that tests various betting systems and bet types requires careful planning. Below is an example of how you might structure such a program. This program will simulate 100 rounds of Roulette, apply each betting system to different bet types (e.g., red/black, first half, rows), and output the final balance for each system. 
+python
+ 
+ 
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+⌄
+import random
+
+# Define the Roulette wheel with 37 slots (0-36)
+roulette_wheel = list(range(37))
+
+def spin_wheel():
+    return random.choice(roulette_wheel)
+
+def bet_on_red_or_black(number):
+    return number in [1, 3, 5, 7, 9, 12, 14, 16, 18, 19, 21, 23, 25, 27, 30, 32, 34, 36]
+
+def bet_on_first_half(number):
+    return number in range(1, 19)
+
+def bet_on_rows(number):
+    # Example: Bet on the first row (1-3)
+    return number in [1, 2, 3]
+
+# Define betting systems
+def martingale(balance, unit=1):
+    bet = unit
+    while balance > 0:
+        yield bet
+        result = spin_wheel()
+        if bet_on_red_or_black(result):  # Example: Bet on red/black
+            balance += bet
+        else:
+            balance -= bet
+        bet *= 2
+
+def fibonacci(balance):
+    a, b = 1, 1
+    while balance > 0:
+        yield min(a, balance)
+        result = spin_wheel()
+        if bet_on_red_or_black(result):  # Example: Bet on red/black
+            balance += a
+        else:
+            balance -= a
+        a, b = b, a + b
+
+def d_alambert(balance, unit=1):
+    bet = unit
+    while balance > 0:
+        yield bet
+        result = spin_wheel()
+        if bet_on_red_or_black(result):  # Example: Bet on red/black
+            balance += bet
+        else:
+            balance -= bet
+        bet += (-1 if bet_on_red_or_black(result) else 1) * unit
+
+# Add more betting systems here...
+
+def simulate_roulette(systems, rounds=100):
+    results = {name: [] for name in systems}
+    initial_balance = 1000  # Starting balance
+    for _ in range(rounds):
+        balances = {name: initial_balance for name in systems}
+        for system_name, system_func in systems.items():
+            generator = system_func(balances[system_name])
+            try:
+                while True:
+                    bet_amount = next(generator)
+                    result = spin_wheel()
+                    if bet_on_red_or_black(result):  # Example: Bet on red/black
+                        balances[system_name] += bet_amount
+                    else:
+                        balances[system_name] -= bet_amount
+            except StopIteration:
+                results[system_name].append(balances[system_name])
+    return results
+
+# Define the betting systems to test
+betting_systems = {
+    "Martingale": martingale,
+    "Fibonacci": fibonacci,
+    "D'Alembert": d_alambert,
+    # Add more systems here...
+}
+
+# Run the simulation
+results = simulate_roulette(betting_systems)
+
+# Output the results
+for system_name, balances in results.items():
+    print(f"{system_name} System Results:")
+    for i, balance in enumerate(balances):
+        print(f"Game {i+1}: Balance = {balance}")
+ 
+ 
+Explanation: 
+
+    Roulette Wheel Simulation : The spin_wheel function simulates spinning the Roulette wheel.
+    Bet Conditions : Functions like bet_on_red_or_black, bet_on_first_half, and bet_on_rows determine if a bet wins based on the spun number.
+    Betting Systems : Each betting system is defined as a generator function that yields the bet amount for each round.
+    Simulation Function : The simulate_roulette function runs the simulation for a specified number of rounds, applying each betting system to different bet types and tracking the balance after each game.
+    Results Output : The results are printed out, showing the final balance for each betting system after 100 games.
+     
+
+You can extend this program by adding more betting systems and bet conditions as needed. This framework provides a solid foundation for simulating Roulette with various betting strategies. 
